@@ -1,11 +1,11 @@
 pipeline {
 	agent {	
-		label 'pipeline-1'
+		label 'ubuntu-node'
 		}
 	stages {
 		stage("SCM") {
 			steps {
-				git 'https://github.com/wssrronak/java-docker-app.git'
+				git 'https://github.com/mudit-vyas/abv.git'
 				}
 			}
 
@@ -18,16 +18,16 @@ pipeline {
 		stage("Image") {
 			steps {
 				sh 'sudo docker build -t java-repo:$BUILD_TAG .'
-				sh 'sudo docker tag java-repo:$BUILD_TAG srronak/pipeline-java:$BUILD_TAG'
+				sh 'sudo docker tag java-repo:$BUILD_TAG muditvyas26/pipeline-java:$BUILD_TAG'
 				}
 			}
 				
 	
 		stage("Docker Hub") {
 			steps {
-			withCredentials([string(credentialsId: 'docker_hub_passwd', variable: 'docker_hub_password_var')]) {
-				sh 'sudo docker login -u srronak -p ${docker_hub_password_var}'
-				sh 'sudo docker push srronak/pipeline-java:$BUILD_TAG'
+			withCredentials([string(credentialsId: 'docker_passwd', variable: 'docker_hub_password_var')]) {
+				sh 'sudo docker login -u muditvyas26 -p ${docker_hub_password_var}'
+				sh 'sudo docker push muditvyas26/pipeline-java:$BUILD_TAG'
 				}
 			}	
 
@@ -35,7 +35,7 @@ pipeline {
 		stage("QAT Testing") {
 			steps {
 				sh 'sudo docker rm -f $(sudo docker ps -a -q)'
-				sh 'sudo docker run -dit -p 8080:8080  srronak/pipeline-java:$BUILD_TAG'
+				sh 'sudo docker run -dit -p 8080:8080  muditvyas26/pipeline-java:$BUILD_TAG'
 				}
 			}
 		stage("testing website") {
@@ -57,8 +57,8 @@ pipeline {
 		stage("Prod Env") {
 			steps {
 			 sshagent(['ubuntu']) {
-			    sh 'ssh -o StrictHostKeyChecking=no ubuntu@65.2.140.187 sudo docker rm -f $(sudo docker ps -a -q)' 
-	                    sh "ssh -o StrictHostKeyChecking=no ubuntu@65.2.140.187 sudo docker run  -d  -p  49153:8080  srronak/javatest-app:$BUILD_TAG"
+			    sh 'ssh -o StrictHostKeyChecking=no ubuntu@65.2.79.180 sudo docker rm -f $(sudo docker ps -a -q)' 
+	                    sh "ssh -o StrictHostKeyChecking=no ubuntu@65.2.79.180 sudo docker run  -d  -p  49153:8080  muditvyas26/javatest-app:$BUILD_TAG"
 				}
 			}
 		}
