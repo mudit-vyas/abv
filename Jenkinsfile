@@ -34,7 +34,7 @@ pipeline {
 		}
 		stage("QAT Testing") {
 			steps {
-				sh 'sudo docker run -dit -p 8080:8080  muditvyas26/pipeline-java:$BUILD_TAG'
+				sh 'sudo docker run -dit -p :8080  muditvyas26/pipeline-java:$BUILD_TAG'
 				}
 			}
 
