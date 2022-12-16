@@ -34,10 +34,10 @@ pipeline {
 		}
 		stage("QAT Testing") {
 			steps {
-				sh 'sudo docker rm -f $(sudo docker ps -a -q)'
 				sh 'sudo docker run -dit -p 8080:8080  muditvyas26/pipeline-java:$BUILD_TAG'
 				}
 			}
+
 		stage("testing website") {
 			steps {
 				retry(5) {
