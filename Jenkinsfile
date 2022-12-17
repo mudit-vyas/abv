@@ -34,14 +34,14 @@ pipeline {
 		}
 		stage("QAT Testing") {
 			steps {
-				sh 'sudo docker run -dit -p :8080  muditvyas26/pipeline-java:$BUILD_TAG'
+				sh 'sudo docker run -dit -p 8080:8080  muditvyas26/pipeline-java:$BUILD_TAG'
 				}
 			}
 
 		stage("testing website") {
 			steps {
 				retry(5) {
-				sh 'curl --silent http://13.233.105.110:8080/java-web-app/ | grep -i "india" '
+				sh 'curl --silent http://172.31.3.112:8080/java-web-app/ | grep -i "india" '
 					}
 				}
 			}
@@ -56,7 +56,7 @@ pipeline {
 		}
 		stage("Prod Env") {
 			steps {
-			 sshagent(['ubuntu']) {
+			 sshagent(['ubuntu-user']) {
 			    sh 'ssh -o StrictHostKeyChecking=no ubuntu@13.233.105.110 sudo docker rm -f $(sudo docker ps -a -q)' 
 	                    sh "ssh -o StrictHostKeyChecking=no ubuntu@13.233.105.110 sudo docker run  -d  -p  49153:8080  muditvyas26/javatest-app:$BUILD_TAG"
 				}
