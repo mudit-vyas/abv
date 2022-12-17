@@ -56,7 +56,7 @@ pipeline {
 					}
 				}	
 		}
-		stage("Prod Env") {
+		stage("Prod env") {
 			steps {
 			 sshagent(['ubuntu-user']) {
 			    sh 'ssh -o StrictHostKeyChecking=no ubuntu@13.232.141.59 sudo docker rm -f $(sudo docker ps -a -q)' 
