@@ -60,7 +60,7 @@ pipeline {
 			steps {
 			 sshagent(['ubuntu-user']) {
 			    sh 'ssh -o StrictHostKeyChecking=no ubuntu@13.232.141.59 sudo docker rm -f $(sudo docker ps -a -q)' 
-	                    sh "ssh -o StrictHostKeyChecking=no ubuntu@13.232.141.59 sudo docker run  -d  -p  49153:8080  muditvyas26/javatest-app:$BUILD_TAG"
+	                    sh "ssh -o StrictHostKeyChecking=no ubuntu@13.232.141.59 sudo docker run  -d  -p  49153:8080  muditvyas26/pipeline-java:$BUILD_TAG"
 				}
 			}
 		}
