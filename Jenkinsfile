@@ -1,6 +1,6 @@
 pipeline {
 	agent {	
-		label 'slave-jobs'
+		label 'ubuntu-node'
 		}
 	stages {
 		stage("SCM") {
@@ -41,7 +41,7 @@ pipeline {
 		stage("testing website") {
 			steps {
 				retry(5) {
-				sh 'curl --silent http://13.232.133.105:8080/java-web-app/ | grep -i "india" '
+				sh 'curl --silent http://13.233.105.110:8080/java-web-app/ | grep -i "india" '
 					}
 				}
 			}
@@ -57,8 +57,8 @@ pipeline {
 		stage("Prod Env") {
 			steps {
 			 sshagent(['ubuntu']) {
-			    sh 'ssh -o StrictHostKeyChecking=no ubuntu@65.2.79.180 sudo docker rm -f $(sudo docker ps -a -q)' 
-	                    sh "ssh -o StrictHostKeyChecking=no ubuntu@65.2.79.180 sudo docker run  -d  -p  49153:8080  muditvyas26/javatest-app:$BUILD_TAG"
+			    sh 'ssh -o StrictHostKeyChecking=no ubuntu@13.233.105.110 sudo docker rm -f $(sudo docker ps -a -q)' 
+	                    sh "ssh -o StrictHostKeyChecking=no ubuntu@13.233.105.110 sudo docker run  -d  -p  49153:8080  muditvyas26/javatest-app:$BUILD_TAG"
 				}
 			}
 		}
