@@ -1,6 +1,6 @@
 pipeline {
 	agent {	
-		label 'ubuntu-node'
+		label 'ubuntu1'
 		}
 	stages {
 		stage("SCM") {
@@ -42,7 +42,7 @@ pipeline {
 
 		stage("testing website") {
 			steps {
-				retry(5) {
+				retry(8) {
 				sh 'curl --silent http://172.31.3.112:8080/java-web-app/ | grep -i "india" '
 					}
 				}
